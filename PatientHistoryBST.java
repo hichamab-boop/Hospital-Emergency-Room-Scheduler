@@ -1,6 +1,6 @@
 package structures;
 
-import models.Patient;
+import emergencyroom.Patient;
 import java.time.Instant;
 
 public class PatientHistoryBST {
@@ -61,14 +61,14 @@ public class PatientHistoryBST {
             
             System.out.println("ID: " + node.patient.getPatientID() + 
                                " | Name: " + node.patient.getName() + 
-                               " | Arrival: " + Instant.ofEpochMilli(node.patient.getArrivalTime()));
+                               " | Arrival: " + Instant.ofEpochMilli(node.patient.getArrivalTime() * 60000L)); // Converts minutes to ms for display
             
             printInOrderRecursive(node.right);
         }
     }
 
     public void recordTreatmentEnd(Patient p, long endTimeMs) {
-        long waitTime = endTimeMs - p.getArrivalTime();
+        long waitTime = endTimeMs - (p.getArrivalTime() * 60000L); // Convert arrival minutes to ms to compute wait difference
         totalWaitTimeMs += waitTime;
     }
 
