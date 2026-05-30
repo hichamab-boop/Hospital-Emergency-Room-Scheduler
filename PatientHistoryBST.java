@@ -47,12 +47,12 @@ public class PatientHistoryBST {
 
     public void printChronologicalHistory() {
         if (root == null) {
-            System.out.println("L'historique des urgences est vide.");
+            System.out.println("Emergency history is empty.");
             return;
         }
-        System.out.println("\n===== HISTORIQUE CHRONOLOGIQUE (BST IN-ORDER) =====");
+        System.out.println("\n===== CHRONOLOGICAL HISTORY (BST IN-ORDER) =====");
         printInOrderRecursive(root);
-        System.out.println("===================================================\n");
+        System.out.println("================================================\n");
     }
 
     private void printInOrderRecursive(Node node) {
@@ -60,8 +60,8 @@ public class PatientHistoryBST {
             printInOrderRecursive(node.left);
             
             System.out.println("ID: " + node.patient.getPatientID() + 
-                               " | Nom: " + node.patient.getName() + 
-                               " | Arrivée: " + Instant.ofEpochMilli(node.patient.getArrivalTime()));
+                               " | Name: " + node.patient.getName() + 
+                               " | Arrival: " + Instant.ofEpochMilli(node.patient.getArrivalTime()));
             
             printInOrderRecursive(node.right);
         }
