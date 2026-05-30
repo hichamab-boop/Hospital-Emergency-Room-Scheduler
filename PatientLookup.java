@@ -1,6 +1,6 @@
 package structures;
 
-import models.Patient;
+import emergencyroom.Patient;
 import java.util.HashMap;
 
 public class PatientLookup {
