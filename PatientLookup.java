@@ -3,7 +3,7 @@ package emergencyroom;
 import java.util.HashMap;
 
 public class PatientLookup {
-    private HashMap<Long, Patient> lookupTable;
+    private HashMap<Integer, Patient> lookupTable;
 
     public PatientLookup() {
         this.lookupTable = new HashMap<>();
@@ -15,15 +15,15 @@ public class PatientLookup {
         }
     }
 
-    public Patient get(long patientId) {
+    public Patient get(int patientId) {
         return lookupTable.get(patientId);
     }
 
-    public boolean contains(long patientId) {
+    public boolean contains(int patientId) {
         return lookupTable.containsKey(patientId);
     }
 
-    public void remove(long patientId) {
+    public void remove(int patientId) {
         lookupTable.remove(patientId);
     }
 }
