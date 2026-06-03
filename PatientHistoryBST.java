@@ -16,7 +16,7 @@ public class PatientHistoryBST {
 
     private Node root;
     private int totalPatientsCount = 0;
-    private long totalWaitTime = 0; // Using long to avoid overflow during total accumulation
+    private long totalWaitTime = 0;
 
     public PatientHistoryBST() {
         this.root = null;
