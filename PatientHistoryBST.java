@@ -1,11 +1,8 @@
-package structures;
-
-import models.Patient; // Fixed package path to match your repository structure
-import java.time.Instant;
+package emergencyroom;
 
 public class PatientHistoryBST {
     
-    private class Node {
+    private static class Node {
         Patient patient;
         Node left;
         Node right;
@@ -19,7 +16,7 @@ public class PatientHistoryBST {
 
     private Node root;
     private int totalPatientsCount = 0;
-    private long totalWaitTimeMs = 0;
+    private long totalWaitTime = 0; // Using long to avoid overflow during total accumulation
 
     public PatientHistoryBST() {
         this.root = null;
@@ -59,23 +56,21 @@ public class PatientHistoryBST {
         if (node != null) {
             printInOrderRecursive(node.left);
             
-            System.out.println("ID: " + node.patient.getPatientID() + 
+            System.out.println("ID: " + node.patient.getId() + 
                                " | Name: " + node.patient.getName() + 
-                               " | Arrival: " + Instant.ofEpochMilli(node.patient.getArrivalTime() * 60000L));
+                               " | Arrival Unit: " + node.patient.getArrivalTime());
             
             printInOrderRecursive(node.right);
         }
     }
 
-    public void recordTreatmentEnd(Patient p, long endTimeMs) {
-        long waitTime = endTimeMs - (p.getArrivalTime() * 60000L);
-        totalWaitTimeMs += waitTime;
+    public void recordTreatmentEnd(Patient p, int endTime) {
+        int waitTime = endTime - p.getArrivalTime();
+        totalWaitTime += waitTime;
     }
 
     public double computeAverageWaitTimeMinutes() {
         if (totalPatientsCount == 0) return 0.0;
-        
-        double avgWaitMs = (double) totalWaitTimeMs / totalPatientsCount;
-        return avgWaitMs / 60000.0;
+        return (double) totalWaitTime / totalPatientsCount;
     }
 }
