@@ -1,6 +1,5 @@
-package structures;
+package emergencyroom;
 
-import emergencyroom.Patient;
 import java.util.HashMap;
 
 public class PatientLookup {
@@ -12,7 +11,7 @@ public class PatientLookup {
 
     public void put(Patient p) {
         if (p != null) {
-            lookupTable.put(p.getPatientID(), p);
+            lookupTable.put(p.getId(), p);
         }
     }
 
