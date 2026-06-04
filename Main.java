@@ -20,15 +20,15 @@ public class Main {
         }
 
         System.out.println("Compiling the emergency room package...");
-        // 1. Compile the emergency room package files into `./emergencyroom/` directory
+        // 1. Compile the emergency room package files
         int result = compiler.run(null, null, null,
             "-d", ".",
-            "Doctor.java",
-            "DoctorQueue.java",
-            "Patient.java",
-            "PatientHistoryBST.java",
-            "PatientLookup.java",
-            "SeverityLevel.java"
+            "emergencyroom/Doctor.java",
+            "emergencyroom/DoctorQueue.java",
+            "emergencyroom/Patient.java",
+            "emergencyroom/PatientHistoryBST.java",
+            "emergencyroom/PatientLookup.java",
+            "emergencyroom/SeverityLevel.java"
         );
 
         if (result != 0) {
@@ -37,21 +37,11 @@ public class Main {
         }
 
         System.out.println("Compiling the triage system...");
-        // Create an empty dummy directory for sourcepath
-        File dummyDir = new File("dummy");
-        if (!dummyDir.exists()) {
-            dummyDir.mkdir();
-        }
-
-        // 2. Compile TriageSystem using an empty sourcepath to satisfy package directory constraints
+        // 2. Compile TriageSystem using the current directory as the classpath
         result = compiler.run(null, null, null,
-            "-sourcepath", "dummy",
             "-cp", ".",
             "TriageSystem.java"
         );
-
-        // Clean up dummy directory
-        deleteDir(dummyDir);
 
         if (result != 0) {
             System.err.println("\n[ERROR] TriageSystem compilation failed.");
@@ -78,8 +68,8 @@ public class Main {
             for (File file : files) {
                 if (file.getName().endsWith(".class")) {
                     file.delete();
-                } else if (file.isDirectory() && file.getName().equals("emergencyroom")) {
-                    deleteDir(file);
+                } else if (file.isDirectory()) {
+                    cleanOldClassFiles(file); // Recursively clean class files inside subdirectories
                 }
             }
         }
