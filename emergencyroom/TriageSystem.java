@@ -1,8 +1,9 @@
+package emergencyroom;
+
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
-import emergencyroom.*;
 
 /**
  * Master controller for the ER Triage System.
