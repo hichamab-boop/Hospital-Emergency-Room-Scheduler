@@ -42,7 +42,7 @@ public int computePriority(int currentTime) {
 	    throw new IllegalStateException ("cannot compute priority for patient " + id +" -already treated ");
 	}
 	
-	return (severity.getWeight() * 10) + getWaitTime(currentTime);	
+	return severity.getWeight() * 10;	
 }
 
 public int getWaitTime(int currentTime) {

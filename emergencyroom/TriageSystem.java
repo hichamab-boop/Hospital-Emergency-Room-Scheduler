@@ -53,28 +53,39 @@ public class TriageSystem {
             return;
         }
 
-        System.out.print("Patient Name: ");
-        String name = scanner.nextLine();
+        String name = "";
+        while (true) {
+            System.out.print("Patient Name: ");
+            name = scanner.nextLine().trim();
+            if (!name.isEmpty() && !name.equals("0") && name.matches("^[a-zA-Z\\s]+$")) {
+                break;
+            }
+            System.out.println("Invalid name. Name must contain only letters and spaces, and cannot be empty or '0'.");
+        }
 
-        System.out.print("Date of Birth (YYYY-MM-DD): ");
-        String dob = scanner.nextLine();
+        String dob = "";
+        java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        while (true) {
+            System.out.print("Date of Birth (YYYY-MM-DD): ");
+            dob = scanner.nextLine().trim();
+            try {
+                java.time.LocalDate.parse(dob, formatter);
+                break;
+            } catch (java.time.format.DateTimeParseException e) {
+                System.out.println("Invalid date format or value. Please enter a valid date in YYYY-MM-DD format.");
+            }
+        }
 
-        System.out.println("Severity Levels:");
-        System.out.println("1. MILD (Priority weight = 1)");
-        System.out.println("2. MODERATE (Priority weight = 3)");
-        System.out.println("3. SERIOUS (Priority weight = 6)");
-        System.out.println("4. CRITICAL (Priority weight = 10)");
-        System.out.print("Select Severity Level (1-4): ");
-        SeverityLevel severity;
-        String choice = scanner.nextLine();
-        switch (choice) {
-            case "1": severity = SeverityLevel.MILD; break;
-            case "2": severity = SeverityLevel.MODERATE; break;
-            case "3": severity = SeverityLevel.SERIOUS; break;
-            case "4": severity = SeverityLevel.CRITICAL; break;
-            default:
-                System.out.println("Invalid choice. Defaulting to MILD.");
-                severity = SeverityLevel.MILD;
+        SeverityLevel severity = null;
+        while (true) {
+            System.out.print("Enter Severity Level (MILD, MODERATE, SERIOUS, CRITICAL): ");
+            String severityInput = scanner.nextLine().trim().toUpperCase();
+            try {
+                severity = SeverityLevel.valueOf(severityInput);
+                break;
+            } catch (IllegalArgumentException e) {
+                System.out.println("Invalid severity level. Please enter MILD, MODERATE, SERIOUS, or CRITICAL.");
+            }
         }
 
         // Create the patient with the current simulation time as their arrival time
@@ -103,10 +114,7 @@ public class TriageSystem {
         System.out.print("Doctor Name: ");
         String name = scanner.nextLine();
 
-        System.out.print("Specialization: ");
-        String spec = scanner.nextLine();
-
-        Doctor doctor = new Doctor(id, name, spec);
+        Doctor doctor = new Doctor(id, name);
         doctorQueue.enqueue(doctor);
 
         System.out.println("-> Doctor " + name + " is now on duty and added to the rotation queue.");
@@ -123,7 +131,6 @@ public class TriageSystem {
         }
 
         // Sort patients by priority descending at the current time
-        // Priority formula: (severity.weight * 10) + waitTime
         ArrayList<Patient> sortedPatients = new ArrayList<>(waitingRoom);
         Collections.sort(sortedPatients, (p1, p2) -> {
             int priority1 = p1.computePriority(currentTime);
@@ -135,16 +142,15 @@ public class TriageSystem {
             return Integer.compare(p1.getArrivalTime(), p2.getArrivalTime());
         });
 
-        System.out.printf("%-5s | %-15s | %-10s | %-8s | %-12s | %-8s%n", 
-                "ID", "Name", "Severity", "Arrived", "Wait Units", "Priority");
-        System.out.println("------------------------------------------------------------------");
+        System.out.printf("%-5s | %-15s | %-10s | %-8s | %-8s%n", 
+                "ID", "Name", "Severity", "Arrived", "Priority");
+        System.out.println("-------------------------------------------------------------");
         for (Patient p : sortedPatients) {
-            System.out.printf("%-5d | %-15s | %-10s | %-8d | %-12d | %-8d%n",
+            System.out.printf("%-5d | %-15s | %-10s | %-8d | %-8d%n",
                     p.getId(), 
                     p.getName(), 
                     p.getSeverity(), 
                     p.getArrivalTime(), 
-                    p.getWaitTime(currentTime), 
                     p.computePriority(currentTime));
         }
     }

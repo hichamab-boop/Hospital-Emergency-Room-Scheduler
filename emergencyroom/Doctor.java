@@ -14,6 +14,10 @@ public Doctor(int id, String name,String specialization ) {
 	this.specialization=specialization;
 	this.available=true; //true by default
 }
+
+public Doctor(int id, String name) {
+	this(id, name, "general doctor");
+}
 //getters
 public int getId() {
 	return id;
