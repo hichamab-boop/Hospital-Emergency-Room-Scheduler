@@ -5,7 +5,7 @@ public class DoctorQueue {
 	private Node rear;
 	private int size;
 
-	private DoctorQueue() {
+	public DoctorQueue() {
 		this.front = null;
 		this.rear = null;
 		this.size = 0;
@@ -55,7 +55,6 @@ public class DoctorQueue {
 
 		size--;
 		return removed;
-
 	}
 
 	private static class Node {
@@ -67,22 +66,22 @@ public class DoctorQueue {
 			this.next = null;
 		}
 	}
+
 	@Override
 	public String toString() {
-	    if (isEmpty()) {
-	        return "front -> null";
-	    }
+		if (isEmpty()) {
+			return "front -> null";
+		}
 
-	    String result = "front -> ";
-	    Node current = front ;          
-	                                     
-	    while (current != null) {     
-	        result += current.doctor.getName() + " -> ";     
-	        current = current.next;   
-	    }
+		String result = "front -> ";
+		Node current = front;
 
-	    result += "null";
-	    return result;
+		while (current != null) {
+			result += current.doctor.getName() + " -> ";
+			current = current.next;
+		}
+
+		result += "null";
+		return result;
 	}
-	
 }
